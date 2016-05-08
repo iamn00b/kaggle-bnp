@@ -1,15 +1,19 @@
 import numpy as np 
 import pandas as pd
+import h5py
+
 import sys
 import argparse
 import os
 
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) + '/'
+
 parser = argparse.ArgumentParser(description='Preprocess BNP Paribas claim management data')
 parser.add_argument('--train', 
-                      default=os.path.dirname(os.path.abspath(__file__)) + '/../data_raw/train.csv',
+                      default=CURRENT_DIR + '../data_raw/train.csv',
                       help='training data (in csv format)')
 parser.add_argument('--test', 
-                      default=os.path.dirname(os.path.abspath(__file__)) + '/../data_raw/test.csv',
+                      default=CURRENT_DIR + '../data_raw/test.csv',
                       help='testing data (in csv format)')
 args = parser.parse_args()
 
@@ -69,5 +73,23 @@ print 'Split encoding to train and test'
 train = data_encoded.iloc[:train_rows, :]
 test = data_encoded.iloc[train_rows:, :] 
 
-print train[:2]
-print test[:2]
+print '== SAVING DATA'
+print 'Convert dataframe to numpy float64'
+train = train.astype('float64')
+test = test.astype('float64')
+
+print 'Transpose target and id list'
+target = np.matrix(target).transpose()
+id_test = np.matrix(id_test).transpose()
+
+print 'Saving to single h5 file'
+h5f = h5py.File(CURRENT_DIR + 'data_preprocessed.h5', 'w')
+h5f.create_dataset('train', data=train)
+h5f.create_dataset('label', data=target)
+h5f.create_dataset('test', data=test)
+h5f.create_dataset('test_id', data=id_test)
+h5f.close()
+print 'data saved as data_preprocessed.h5'
+
+print ''
+print '== PREPROCESS COMPLETED'
