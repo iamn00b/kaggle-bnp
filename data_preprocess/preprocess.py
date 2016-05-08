@@ -58,8 +58,8 @@ test = test.fillna(columnMean)
 print ' '
 print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
 for column in columnWithString:
-  onehot_train = pd.get_dummies(train[column])
-  onehot_test = pd.get_dummies(test[column])
+  onehot_train = pd.get_dummies(train[column], prefix=column)
+  onehot_test = pd.get_dummies(test[column], prefix=column)
   train = train.drop(column, axis=1).join(onehot_train)
   test = test.drop(column, axis=1).join(onehot_test)
 
