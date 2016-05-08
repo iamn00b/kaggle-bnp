@@ -66,3 +66,4 @@ for column in columnWithString:
   test = test.drop(column, axis=1).join(onehot_test)
 
 print train[:2]
+print test[:2]
