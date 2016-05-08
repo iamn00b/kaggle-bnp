@@ -60,13 +60,9 @@ print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
 for column in columnWithString:
   print 'change categorical data in train data, column', column, 'to one-hot'
   onehot_train = pd.get_dummies(train[column], prefix=column)
-  print 'add one-hot to train data'
   train = train.drop(column, axis=1).join(onehot_train)
-
-for column in columnWithString:
   print 'change categorical data in test data, column', column, 'to one-hot'
   onehot_test = pd.get_dummies(test[column], prefix=column)
-  print 'add one-hot to test data'
   test = test.drop(column, axis=1).join(onehot_test)
 
 print train[:2]
