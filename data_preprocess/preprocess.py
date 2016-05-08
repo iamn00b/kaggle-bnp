@@ -79,6 +79,11 @@ train = data_encoded.iloc[:train_rows, :]
 test = data_encoded.iloc[train_rows:, :] 
 
 print ''
+print '== PREPROCESS RESULT'
+print 'Train data size (rows, columns) :' , train.shape
+print 'Test data size (rows, columns) :' , test.shape
+
+print ''
 print '== SAVING DATA'
 print 'Convert dataframe to numpy float64'
 train = train.astype('float64')
