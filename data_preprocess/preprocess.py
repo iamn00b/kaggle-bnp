@@ -63,6 +63,11 @@ columnMean = train.mean()
 train = train.fillna(columnMean)
 test = test.fillna(columnMean)
 
+
+train = train.drop(["v22"], axis=1)
+test = test.drop(["v22"], axis=1)
+
+
 print ' '
 print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
 preprocess_table = pd.concat([train,test], axis=0)
@@ -73,6 +78,7 @@ print 'Split encoding to train and test'
 train = data_encoded.iloc[:train_rows, :]
 test = data_encoded.iloc[train_rows:, :] 
 
+print ''
 print '== SAVING DATA'
 print 'Convert dataframe to numpy float64'
 train = train.astype('float64')
