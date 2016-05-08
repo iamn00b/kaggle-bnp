@@ -26,7 +26,6 @@ test = pd.read_csv(args.test)
 id_test = test['ID'].values
 
 print ' '
-
 print '== DATA INFORMATION'
 print 'Train data size (rows, columns) :' , train.shape
 print 'Test data size (rows, columns) :' , test.shape
@@ -40,6 +39,11 @@ list_missing_value_columns_count = totalTrueInArray(list_missing_value_columns)
 
 print 'Rows count that contains missing value :', list_missing_value_rows_count
 print 'Columns count that contains missing value :', list_missing_value_columns_count
+
+print ' '
+print '== DROP ID AND TARGET COLUMN'
+train = train.drop(['ID', 'target'], axis=1)
+test = test.drop(['ID'], axis=1)
 
 print ' '
 print '== MISSING VALUE TO MEAN/MODUS'
@@ -57,13 +61,13 @@ test = test.fillna(columnMean)
 
 print ' '
 print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
-for column in columnWithString:
-  print 'change categorical data in train data, column', column, 'to one-hot'
-  onehot_train = pd.get_dummies(train[column], prefix=column)
-  train = train.drop(column, axis=1).join(onehot_train)
-  print 'change categorical data in test data, column', column, 'to one-hot'
-  onehot_test = pd.get_dummies(test[column], prefix=column)
-  test = test.drop(column, axis=1).join(onehot_test)
+preprocess_table = pd.concat([train,test], axis=0)
+print 'Encode data into one-hot encoding'
+data_encoded = pd.get_dummies(preprocess_table, prefix=column)
+train_rows = train.shape[0]
+print 'Split encoding to train and test'
+train = data_encoded.iloc[:train_rows, :]
+test = data_encoded.iloc[train_rows:, :] 
 
 print train[:2]
 print test[:2]
