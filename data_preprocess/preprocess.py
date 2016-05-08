@@ -9,7 +9,7 @@ parser.add_argument('--train',
                       default=os.path.dirname(os.path.abspath(__file__)) + '/../data_raw/train.csv',
                       help='training data (in csv format)')
 parser.add_argument('--test', 
-                      default=os.path.dirname(os.path.abspath(__file__)) + '/../data_raw/train.csv',
+                      default=os.path.dirname(os.path.abspath(__file__)) + '/../data_raw/test.csv',
                       help='testing data (in csv format)')
 args = parser.parse_args()
 
