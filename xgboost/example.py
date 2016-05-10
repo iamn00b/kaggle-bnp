@@ -12,6 +12,9 @@ parser = argparse.ArgumentParser(description='Train BNP Paribas claim management
 parser.add_argument('--data', 
                       default=CURRENT_DIR + '../data_preprocess/data_preprocessed.h5',
                       help='Data for training and testing (in h5 format)')
+parser.add_argument('--maxdepth', 
+                      default=5,
+                      help='BST Max Depth')
 parser.add_argument('--output', 
                       default=CURRENT_DIR + 'output.csv',
                       help='output filename (in csv format)')
@@ -32,7 +35,7 @@ dtest = xgb.DMatrix(test_input, missing=-999)
 
 print ''
 print '== XGBOOST PREPARATION'
-param = {'bst:max_depth':2, 'bst:eta':1, 'bst:gamma':1, 'silent':1, 'objective':'binary:logistic' }
+param = {'bst:max_depth':max_depth, 'bst:eta':1, 'bst:gamma':1, 'silent':1, 'objective':'binary:logistic' }
 param['nthread'] = 4
 param['eval_metric'] = 'auc'
 evallist  = [(dtrain,'train')]
