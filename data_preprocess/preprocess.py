@@ -15,6 +15,11 @@ parser.add_argument('--train',
 parser.add_argument('--test', 
                       default=CURRENT_DIR + '../data_raw/test.csv',
                       help='testing data (in csv format)')
+parser.add_argument('--output', 
+                      default='data_preprocessed.h5',
+                      help='output filename (in h5 format)')
+parser.add_argument('--onehot', action='store_true',
+                      help='transform categorical data into one-hot encoding')
 args = parser.parse_args()
 
 def totalTrueInArray(array):
@@ -63,20 +68,19 @@ columnMean = train.mean()
 train = train.fillna(columnMean)
 test = test.fillna(columnMean)
 
-
 train = train.drop(["v22"], axis=1)
 test = test.drop(["v22"], axis=1)
 
-
-print ' '
-print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
-preprocess_table = pd.concat([train,test], axis=0)
-print 'Encode data into one-hot encoding'
-data_encoded = pd.get_dummies(preprocess_table, prefix=column)
-train_rows = train.shape[0]
-print 'Split encoding to train and test'
-train = data_encoded.iloc[:train_rows, :]
-test = data_encoded.iloc[train_rows:, :] 
+if args.onehot:
+  print ' '
+  print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
+  preprocess_table = pd.concat([train,test], axis=0)
+  print 'Encode data into one-hot encoding'
+  data_encoded = pd.get_dummies(preprocess_table, prefix=column)
+  train_rows = train.shape[0]
+  print 'Split encoding to train and test'
+  train = data_encoded.iloc[:train_rows, :]
+  test = data_encoded.iloc[train_rows:, :] 
 
 print ''
 print '== PREPROCESS RESULT'
@@ -85,22 +89,24 @@ print 'Test data size (rows, columns) :' , test.shape
 
 print ''
 print '== SAVING DATA'
-print 'Convert dataframe to numpy float64'
-train = train.astype('float64')
-test = test.astype('float64')
+if args.onehot:
+  print 'Convert dataframe to numpy float64'
+  train = train.astype('float64')
+  test = test.astype('float64')
 
 print 'Transpose target and id list'
 target = np.matrix(target).transpose()
 id_test = np.matrix(id_test).transpose()
 
 print 'Saving to single h5 file'
-h5f = h5py.File(CURRENT_DIR + 'data_preprocessed.h5', 'w')
+filename = args.output
+h5f = h5py.File(CURRENT_DIR + filename, 'w')
 h5f.create_dataset('train', data=train)
 h5f.create_dataset('label', data=target)
 h5f.create_dataset('test', data=test)
 h5f.create_dataset('test_id', data=id_test)
 h5f.close()
-print 'data saved as data_preprocessed.h5'
+print 'data saved as', filename
 
 print ''
 print '== PREPROCESS COMPLETED'
