@@ -104,8 +104,8 @@ id_test = np.matrix(id_test).transpose()
 print 'Saving to single h5 file'
 filename = args.output
 h5f = h5py.File(CURRENT_DIR + filename, 'w')
-h5f.create_dataset('train', data=train)
-h5f.create_dataset('label', data=target)
+h5f.create_dataset('train_input', data=train)
+h5f.create_dataset('train_label', data=target)
 h5f.create_dataset('test', data=test)
 h5f.create_dataset('test_id', data=id_test)
 h5f.close()
