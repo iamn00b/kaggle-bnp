@@ -1,4 +1,5 @@
 import xgboost as xgb
+import h5py
 
 import sys
 import argparse
