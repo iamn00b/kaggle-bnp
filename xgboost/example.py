@@ -46,4 +46,18 @@ print '== XGBOOST PREDICTION'
 ypred = bst.predict(dtest)
 print ypred
 
-xgb.plot_importance(bst)
+# print ''
+# print '== XGBOOST PLOTTING'
+# xgb.plot_importance(bst)
+
+print ''
+print '== CREATE SUBMISSION FILE'
+outputList = ypred.tolist()
+submission = [['ID','PredictedProb']]
+
+for i in range(0, len(outputList)):
+  newRow = [test_id[i,0], outputList[i][0]]
+  submission.append(newRow)
+
+submission = np.matrix(submission, dtype=object)
+np.savetxt(CURRENT_DIR + 'submission.csv', submission, delimiter=',', fmt='%s')
