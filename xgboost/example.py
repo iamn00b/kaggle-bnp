@@ -56,7 +56,7 @@ outputList = ypred.tolist()
 submission = [['ID','PredictedProb']]
 
 for i in range(0, len(outputList)):
-  newRow = [test_id[i,0], outputList[i][0]]
+  newRow = [test_id[i,0], outputList[i]]
   submission.append(newRow)
 
 submission = np.matrix(submission, dtype=object)
