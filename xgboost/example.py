@@ -9,7 +9,7 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 parser = argparse.ArgumentParser(description='Train BNP Paribas claim management data with XGBOOST')
 parser.add_argument('--data', 
-                      default=CURRENT_DIR + '../data_preprocessed/data_preprocessed.h5',
+                      default=CURRENT_DIR + '../data_preprocess/data_preprocessed.h5',
                       help='Data for training and testing (in h5 format)')
 parser.add_argument('--output', 
                       default=CURRENT_DIR + 'output.csv',
