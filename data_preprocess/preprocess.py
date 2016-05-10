@@ -79,7 +79,7 @@ if args.onehot:
   print '== CONVERT CATEGORICAL INTO ONE HOT ENCODING'
   preprocess_table = pd.concat([train,test], axis=0)
   print 'Encode data into one-hot encoding'
-  data_encoded = pd.get_dummies(preprocess_table, prefix=column)
+  data_encoded = pd.get_dummies(preprocess_table)
   train_rows = train.shape[0]
   print 'Split encoding to train and test'
   train = data_encoded.iloc[:train_rows, :]
