@@ -44,5 +44,6 @@ bst = xgb.train( param, dtrain, num_round, evallist )
 print ''
 print '== XGBOOST PREDICTION'
 ypred = bst.predict(dtest)
+print ypred
 
 xgb.plot_importance(bst)
