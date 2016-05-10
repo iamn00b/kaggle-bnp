@@ -70,6 +70,11 @@ if args.fillna:
   columnMean = train.mean()
   train = train.fillna(columnMean)
   test = test.fillna(columnMean)
+else:
+  print ' '
+  print '== MISSING VALUE TO -999'
+  train = train.fillna(-999)
+  test = test.fillna(-999)
 
 train = train.drop(["v22"], axis=1)
 test = test.drop(["v22"], axis=1)
