@@ -20,6 +20,8 @@ parser.add_argument('--output',
                       help='output filename (in h5 format)')
 parser.add_argument('--onehot', action='store_true',
                       help='transform categorical data into one-hot encoding')
+parser.add_argument('--fillna', action='store_true',
+                      help='fill missing value with mean/modus')
 args = parser.parse_args()
 
 def totalTrueInArray(array):
@@ -54,19 +56,20 @@ print '== DROP ID AND TARGET COLUMN'
 train = train.drop(['ID', 'target'], axis=1)
 test = test.drop(['ID'], axis=1)
 
-print ' '
-print '== MISSING VALUE TO MEAN/MODUS'
-print 'Fill categorical data with modus in it\'s column'
-columnWithString = ["v3", "v22", "v24", "v30", "v31", "v47", "v52", "v56", "v66", "v71", "v74", "v75", "v79", "v91", "v107", "v110", "v112", "v113", "v125"]
-for column in columnWithString:
-  columnModus = train[column].value_counts().idxmax()
-  train[column].fillna(columnModus)
-  test[column].fillna(columnModus)
+if args.fillna:
+  print ' '
+  print '== MISSING VALUE TO MEAN/MODUS'
+  print 'Fill categorical data with modus in it\'s column'
+  columnWithString = ["v3", "v22", "v24", "v30", "v31", "v47", "v52", "v56", "v66", "v71", "v74", "v75", "v79", "v91", "v107", "v110", "v112", "v113", "v125"]
+  for column in columnWithString:
+    columnModus = train[column].value_counts().idxmax()
+    train[column].fillna(columnModus)
+    test[column].fillna(columnModus)
 
-print 'Fill numerical data with mean in it\'s column'
-columnMean = train.mean()
-train = train.fillna(columnMean)
-test = test.fillna(columnMean)
+  print 'Fill numerical data with mean in it\'s column'
+  columnMean = train.mean()
+  train = train.fillna(columnMean)
+  test = test.fillna(columnMean)
 
 train = train.drop(["v22"], axis=1)
 test = test.drop(["v22"], axis=1)

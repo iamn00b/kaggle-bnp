@@ -25,8 +25,8 @@ test_id = h5f['test_id'][:]
 h5f.close()
 
 print 'Loading data into XGBoost DMatrix'
-dtrain = xgb.DMatrix(train_input, label=train_label)
-dtest = xgb.DMatrix(test_input)
+dtrain = xgb.DMatrix(train_input, missing=-999.0, label=train_label)
+dtest = xgb.DMatrix(test_input, missing=-999.0)
 
 print ''
 print '== XGBOOST PREPARATION'
